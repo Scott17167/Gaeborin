@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="개보린">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <title>개보린 - 개인정보보호 자율점검 올클린</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2519,6 +2527,11 @@
   document.addEventListener('input', function (e) { if (e.target && e.target.id === 'f-pharmacyName') syncPharm(); });
   setInterval(syncPharm, 800); // 불러오기·예시 채우기처럼 코드로 값이 바뀌는 경우까지 반영
   syncPharm();
+
+  // 홈 화면 설치용(웹앱): 호스팅 주소에서만 서비스 워커 등록 (파일로 열었을 때는 해당 없음)
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+  }
 
   window.GBLog = { log: log, flush: flush, check: checkConnection, emp: function () { return currentEmp; }, pending: function () { return loadQueue().length; } };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initGate); else initGate();
